@@ -5,7 +5,7 @@ import { NewTodolist, TypeTask } from "./NewTodoList";
 
 export type StateType = "all" | "active" | "completed";
 
-export const NewApp = () => {
+const NewApp = () => {
   const [result, setResult] = useState<Array<TypeTask>>([
     { id: v1(), title: "Занимайся 5 часов в день", isDone: false },
     { id: v1(), title: "Разбирать Todo List", isDone: true },
@@ -39,6 +39,13 @@ export const NewApp = () => {
     setResult(newsTask);
   }
 
+  const booleanTask = (taskId: string, isDone: boolean) => {
+    const newBooleanTasks = result.map((t) => {
+      return t.id === taskId ? {...t, isDone} : t;
+    });
+    setResult(newBooleanTasks);
+  }
+
   return (
     <div className="App">
       <NewTodolist title="Скоро твой путь озарится самой большой звездой!"
@@ -46,7 +53,10 @@ export const NewApp = () => {
                    buttonValue={buttonValue} 
                    deleteButton={deleteButton}
                    newButton={newButton}
+                   booleanTask={booleanTask}
                    />
     </div>
   );
 };
+
+export default NewApp;

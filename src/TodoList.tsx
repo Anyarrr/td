@@ -1,5 +1,7 @@
 import { KeyboardEvent, ChangeEvent, useState } from "react";
 import { FilterValuesType } from "./App";
+import "./App.css";
+
 
 export type TasksType = {
   id: string;
@@ -24,15 +26,17 @@ export function TodoList(props: PropsType) {
   };
 
   const onKeyUpHendler = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
+    if (e.key === "Enter" && e.key !== newTaskTitle) {
       props.addTask(newTaskTitle);
       setNewTaskTitle("");
     }
   };
 
   const addTask = () => {
-    props.addTask(newTaskTitle);
-    setNewTaskTitle("");
+    if(newTaskTitle.trim() !== ""){
+      props.addTask(newTaskTitle.trim());
+      setNewTaskTitle("");
+    }
   };
 
   const onAllClickHendler = () => props.changeFilter("all");
@@ -49,8 +53,11 @@ export function TodoList(props: PropsType) {
           value={newTaskTitle}
           onChange={onNewTaskTitleHendler}
           onKeyUp={onKeyUpHendler}
+          className="error"
+
         />
         <button onClick={addTask}>+</button>
+        <div className="error-message">Fieldis reguired</div>
       </div>
       <ul>
         {props.tasks.map((t) => {

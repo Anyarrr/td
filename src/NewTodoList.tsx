@@ -14,6 +14,7 @@ type AllTask = {
     buttonValue: (value: StateType) => void;
     deleteButton:(id: string) => void;
     newButton:( title: string) => void;
+    booleanTask:( taskId: string, isDone: boolean ) => void;
 }
 
 export const NewTodolist = (props: AllTask) => {
@@ -41,7 +42,14 @@ export const NewTodolist = (props: AllTask) => {
             <div>
             <ul>
                 {props.result.map(t => {
-                    return <li><input type="checkbox" checked={t.isDone}/><span>{t.title}</span>
+                    const booleanNew = ( e: ChangeEvent<HTMLInputElement>) => {
+                        props.booleanTask(t.id, e.currentTarget.checked);
+                    }
+
+                    return <li><input type="checkbox" 
+                    checked={t.isDone}
+                    onChange={booleanNew}
+                    /><span>{t.title}</span>
                     <button onClick={() => props.deleteButton(t.id)} >x</button>
                     </li>
 
