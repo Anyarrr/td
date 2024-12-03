@@ -1,6 +1,6 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, KeyboardEvent, useState } from "react";
 import { StateType } from "./NewApp";
-
+import "./App.css";
 
 export type TypeTask = {
     id: string
@@ -15,18 +15,32 @@ type AllTask = {
     deleteButton:(id: string) => void;
     newButton:( title: string) => void;
     booleanTask:( taskId: string, isDone: boolean ) => void;
+    filter: StateType;
 }
 
 export const NewTodolist = (props: AllTask) => {
     const [newInput, setNewInput] = useState("");
+    const [error, setError] = useState< string | null >(null);
 
     const newTaskInput = (e: ChangeEvent<HTMLInputElement>) => {
         setNewInput(e.currentTarget.value);
     }
 
+    const onKeyUpHendler = (e: KeyboardEvent<HTMLInputElement>) => {
+        setError(null);
+        if (e.key === "Enter" && e.key !== newInput) {
+          props.newButton(newInput);
+          setNewInput("");
+        }
+      };
+
     const newButton = () => {
-        props.newButton(newInput);
-        setNewInput("");
+        if(newInput.trim() !== ""){
+            props.newButton(newInput.trim());
+            setNewInput("");
+        }else{
+            setError("Title is reguired");
+        }
     }
 
     return(
@@ -36,8 +50,13 @@ export const NewTodolist = (props: AllTask) => {
                 <input
                 value={newInput}
                 onChange={newTaskInput}
+                onKeyUp={onKeyUpHendler}
+                className={ error ? "error" : ""}
+
                 />
                 <button onClick={newButton}>+</button>
+                { error && <div className="error-message">{error}</div>}
+
             </div>
             <div>
             <ul>
@@ -46,7 +65,10 @@ export const NewTodolist = (props: AllTask) => {
                         props.booleanTask(t.id, e.currentTarget.checked);
                     }
 
-                    return <li><input type="checkbox" 
+                    return <li 
+                    className={ t.isDone ? "is-done" : ""}
+                    key={t.id}><input
+                    type="checkbox" 
                     checked={t.isDone}
                     onChange={booleanNew}
                     /><span>{t.title}</span>
@@ -57,9 +79,9 @@ export const NewTodolist = (props: AllTask) => {
             </ul>
             </div>
             <div>
-                <button onClick={() => props.buttonValue("all")}>All</button>
-                <button onClick={() => props.buttonValue("active")}>Active</button>
-                <button onClick={() => props.buttonValue("completed")}>Completed</button>
+                <button className={ props.filter === "all" ? "active-filter" : ""} onClick={() => props.buttonValue("all")}>All</button>
+                <button className={ props.filter === "active" ? "active-filter" : ""} onClick={() => props.buttonValue("active")}>Active</button>
+                <button className={ props.filter === "completed" ? "active-filter" : ""} onClick={() => props.buttonValue("completed")}>Completed</button>
             </div>
         </div>
     )

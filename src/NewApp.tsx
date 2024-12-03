@@ -54,6 +54,7 @@ const NewApp = () => {
                    deleteButton={deleteButton}
                    newButton={newButton}
                    booleanTask={booleanTask}
+                   filter={filter}
                    />
     </div>
   );
