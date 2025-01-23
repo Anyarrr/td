@@ -16,7 +16,7 @@ export function AddItemForm(props: AddItemFormType) {
     //функция добавления по кнопке
     setError(null);
     if (e.key === "Enter") {
-      props.addItem(title);
+      props.addItem(title.trim());
       setTitle(""); //после добавления таски делаем инпут пустым для удобства
     }
   };
@@ -40,7 +40,7 @@ export function AddItemForm(props: AddItemFormType) {
         className={error ? "error" : ""} //если таска при добавлении равна пустой строке то добавить класс чтобы инпут подсветился красным
       />
       <button onClick={addTask}>+</button>
-      {error && <div className="error-message">{error}</div>}{" "}
+      {error && <div className="error-message">{error}</div>}{""}
       {/*если равна пустой строке то и вывести текст */}
     </div>
   );

@@ -2,6 +2,7 @@ import { ChangeEvent, KeyboardEvent, useState } from "react";
 import "./App.css";
 import { FilterValuesType } from "./App";
 import { AddItemForm } from "./AddItemForm";
+import { EditableSpan } from "./EditableSpan";
 
 export type TaskType = {
   id: string;
@@ -48,7 +49,7 @@ export function TodoList(props: PropsType) {
         {props.title}
         <button onClick={removeTodoList}>x</button>
       </h3>
-      <AddItemForm addItem={addTask} />
+      <AddItemForm addItem={addTask}/>
       <div>
         <ul>
           {props.tasks.map((t) => {
@@ -70,7 +71,7 @@ export function TodoList(props: PropsType) {
                   checked={t.isDone}
                   onChange={onChangeHandler}
                 />
-                <span>{t.title}</span>
+                <EditableSpan title={t.title}/>
                 <button onClick={onClickHendler}>x</button>
               </li>
             );
@@ -112,3 +113,5 @@ export function TodoList(props: PropsType) {
 //8.Подвсветка кнопок фильтрации
 //9.Затемнение выполненных тасок
 //10.Удаление тудулистов
+//11.Добавление тудулистов!!!!!!!
+

@@ -1,6 +1,6 @@
 import "./App.css";
 import { v1 } from "uuid";
-import { TodoList } from "./TodoList";
+import { TaskType, TodoList } from "./TodoList";
 import { useState } from "react";
 import { AddItemForm } from "./AddItemForm";
 
@@ -11,6 +11,10 @@ type TodoListType = {
   title: string;
   filter: FilterValuesType;
 };
+
+type TaskStateType = {//типизация для тудушки
+ [key: string]: Array<TaskType>//т.е. это объект у которого есть ключь key со значением string , а значение этого массива является массив объектов!
+}
 
 function App() {
   //const [filter, setFilter] = useState<filterValuesType>("all");для фильтрации выполненных/невыполненных задач
@@ -69,7 +73,7 @@ function App() {
     setTasks({...tasksObj})
   }
 
-  let [tasksObj, setTasks] = useState({
+  let [tasksObj, setTasks] = useState<TaskStateType>({
     [todoListIdOne]: [
       { id: v1(), title: "HTML", isDone: true },
       { id: v1(), title: "CSS", isDone: true },
