@@ -1,3 +1,6 @@
+html{
+  background: #513e2b;
+}
 .App{
   padding: 30px;
   display:flex;
