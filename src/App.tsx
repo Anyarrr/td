@@ -82,12 +82,21 @@ function App() {
       { id: v1(), title: "Book", isDone: false },
       { id: v1(), title: "Milk", isDone: true },
     ],
-  });
-  //еупурь для того чтобы прочитать значение которое лежит в [todoListIdOne]б а это id, мы можем к нему обращаться только tasks[tl.id]б tasks[todoListIdOne]
+  });//еупурь для того чтобы прочитать значение которое лежит в [todoListIdOne]б а это id, мы можем к нему обращаться только tasks[tl.id]б tasks[todoListIdOne]
+
+  const addTodoList = ( title: string) => {//создание нового тудулиста при добавлении
+    let todoLists: TodoListType = {
+      id: v1(),
+      filter: "all",
+      title: title,
+    }
+    setTodoList([todoLists, ...todoList]);//добавление новой тудушки первой а старые сдвинуть
+    setTasks({...tasksObj, [todoLists.id]: []})
+  }
 
   return (
     <div className="App">
-     <AddItemForm addItem={() => {}} id="fdgfg"/>
+     <AddItemForm addItem={addTodoList}/>
       {todoList.map((tl) => {
         let tasksForTodoList = tasksObj[tl.id] || []; //эта функция сюда переехала потому что мы теперь мапит тудушки , и поэтому нам надо чтобы фильтрация взаимодействовала со всеми тудушками которые мы будем мапить
         if (tl.filter === "completed") {

@@ -38,13 +38,17 @@ export function TodoList(props: PropsType) {
     props.removeTodoList(props.id);
   };
 
+  const addTask = ( title: string ) => {//добавление заголовка тудушки
+    props.addTask(title, props.id);
+  }
+
   return (
     <div>
       <h3>
         {props.title}
         <button onClick={removeTodoList}>x</button>
       </h3>
-      <AddItemForm id={props.id} addItem={props.addTask} />
+      <AddItemForm addItem={addTask} />
       <div>
         <ul>
           {props.tasks.map((t) => {
