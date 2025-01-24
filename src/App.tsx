@@ -49,6 +49,19 @@ function App() {
     } //иначе она может быть не найдена
   };
 
+  const changeTaskTitle = (
+    taskId: string,
+    newTitle: string,
+    todoListId: string
+  ) => {
+    let tasks = tasksObj[todoListId]; //получаю нужный массив с помощью такой конструкции, так мы просто достаем значения(тоесть таски), которые вложенны в todoListOne/todoListTwo
+    let task = tasks.find((t) => t.id === taskId); // === это true или falsе, в этом массиве тасок нашли нужную таску
+    if (task) {
+      task.title = newTitle; //псевдоистинна псевдолож, тоесть если такая таска с таким айди существует, то мы поменяем значение
+      setTasks({ ...tasksObj }); //  Создание копии массива обновление состояния с новой копией
+    } //иначе она может быть не найдена
+  };
+
   function changeFilter(value: FilterValuesType, todoListId: string) {
     //фунцкия фильтрации all acrive т.д
     let todoLists = todoList.find((tl) => tl.id === todoListId);
@@ -71,7 +84,7 @@ function App() {
     setTodoList(filteredTodoList);
     delete tasksObj[todoListId];//удаляем удаленный тудулист, ведь зачем нам его хранить в коде, если мы от него избавились
     setTasks({...tasksObj})
-  }
+  };
 
   let [tasksObj, setTasks] = useState<TaskStateType>({
     [todoListIdOne]: [
@@ -120,6 +133,7 @@ function App() {
             changeFilter={changeFilter}
             addTask={addTask}
             changeTaskStatus={changeStatus}
+            changeTaskTitle={changeTaskTitle}
             filter={tl.filter}
             removeTodoList={removeTodoList}
           />
