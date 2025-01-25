@@ -1,3 +1,4 @@
+import { Button } from "@mui/material";
 import { useState } from "react";
 
 type AddItemFormType = {
@@ -39,7 +40,7 @@ export function AddItemForm(props: AddItemFormType) {
         onKeyUp={onKeyUpHendler}
         className={error ? "error" : ""} //если таска при добавлении равна пустой строке то добавить класс чтобы инпут подсветился красным
       />
-      <button onClick={addTask}>+</button>
+      <Button variant="contained" color="primary" onClick={addTask}>+</Button>
       {error && <div className="error-message">{error}</div>}{""}
       {/*если равна пустой строке то и вывести текст */}
     </div>

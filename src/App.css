@@ -1,5 +1,6 @@
 html{
-  background: #513e2b;
+  background: rgb(15, 18, 20);
+  color: #3b82f680;
 }
 .App{
   padding: 30px;

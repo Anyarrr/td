@@ -86,7 +86,7 @@ function App() {
     setTasks({...tasksObj})
   };
 
-  const changeTodoListTitle = ( todoListId: string, newTitle: string) => {
+  const changeTodoListTitle = ( todoListId: string, newTitle: string) => {//изменение инпута тудушки
     const todoLists = todoList.find((tl) => tl.id === todoListId);
     if(todoLists){
       todoLists.title = newTitle;
