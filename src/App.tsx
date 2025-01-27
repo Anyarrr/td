@@ -3,6 +3,17 @@ import { v1 } from "uuid";
 import { TaskType, TodoList } from "./TodoList";
 import { useState } from "react";
 import { AddItemForm } from "./AddItemForm";
+import {
+  AppBar,
+  Button,
+  Container,
+  Grid,
+  IconButton,
+  Paper,
+  Toolbar,
+  Typography,
+} from "@mui/material";
+import MenuIcon from "@mui/icons-material/Menu";
 
 export type FilterValuesType = "all" | "active" | "completed";
 
@@ -12,9 +23,10 @@ type TodoListType = {
   filter: FilterValuesType;
 };
 
-type TaskStateType = {//типизация для тудушки
- [key: string]: Array<TaskType>//т.е. это объект у которого есть ключь key со значением string , а значение этого массива является массив объектов!
-}
+type TaskStateType = {
+  //типизация для тудушки
+  [key: string]: Array<TaskType>; //т.е. это объект у которого есть ключь key со значением string , а значение этого массива является массив объектов!
+};
 
 function App() {
   //const [filter, setFilter] = useState<filterValuesType>("all");для фильтрации выполненных/невыполненных задач
@@ -79,20 +91,22 @@ function App() {
     { id: todoListIdTwo, title: "What to buy", filter: "all" },
   ]);
 
-  let removeTodoList = ( todoListId: string ) => {// удаление тудулиста
-    let filteredTodoList = todoList.filter(tl => tl.id !== todoListId);
+  let removeTodoList = (todoListId: string) => {
+    // удаление тудулиста
+    let filteredTodoList = todoList.filter((tl) => tl.id !== todoListId);
     setTodoList(filteredTodoList);
-    delete tasksObj[todoListId];//удаляем удаленный тудулист, ведь зачем нам его хранить в коде, если мы от него избавились
-    setTasks({...tasksObj})
+    delete tasksObj[todoListId]; //удаляем удаленный тудулист, ведь зачем нам его хранить в коде, если мы от него избавились
+    setTasks({ ...tasksObj });
   };
 
-  const changeTodoListTitle = ( todoListId: string, newTitle: string) => {//изменение инпута тудушки
+  const changeTodoListTitle = (todoListId: string, newTitle: string) => {
+    //изменение инпута тудушки
     const todoLists = todoList.find((tl) => tl.id === todoListId);
-    if(todoLists){
+    if (todoLists) {
       todoLists.title = newTitle;
       setTodoList([...todoList]);
     }
-  }
+  };
 
   let [tasksObj, setTasks] = useState<TaskStateType>({
     [todoListIdOne]: [
@@ -107,47 +121,71 @@ function App() {
       { id: v1(), title: "Book", isDone: false },
       { id: v1(), title: "Milk", isDone: true },
     ],
-  });//еупурь для того чтобы прочитать значение которое лежит в [todoListIdOne]б а это id, мы можем к нему обращаться только tasks[tl.id]б tasks[todoListIdOne]
+  }); //еупурь для того чтобы прочитать значение которое лежит в [todoListIdOne]б а это id, мы можем к нему обращаться только tasks[tl.id]б tasks[todoListIdOne]
 
-  const addTodoList = ( title: string) => {//создание нового тудулиста при добавлении
+  const addTodoList = (title: string) => {
+    //создание нового тудулиста при добавлении
     let todoLists: TodoListType = {
       id: v1(),
       filter: "all",
       title: title,
-    }
-    setTodoList([todoLists, ...todoList]);//добавление новой тудушки первой а старые сдвинуть
-    setTasks({...tasksObj, [todoLists.id]: []})
-  }
+    };
+    setTodoList([todoLists, ...todoList]); //добавление новой тудушки первой а старые сдвинуть
+    setTasks({ ...tasksObj, [todoLists.id]: [] });
+  };
 
   return (
     <div className="App">
-     <AddItemForm addItem={addTodoList}/>
-      {todoList.map((tl) => {
-        let tasksForTodoList = tasksObj[tl.id] || []; //эта функция сюда переехала потому что мы теперь мапит тудушки , и поэтому нам надо чтобы фильтрация взаимодействовала со всеми тудушками которые мы будем мапить
-        if (tl.filter === "completed") {
-          tasksForTodoList = tasksForTodoList.filter((t) => t.isDone === true);
-        }
-        if (tl.filter === "active") {
-          tasksForTodoList = tasksForTodoList.filter((t) => t.isDone === false);
-        }
+      <AppBar position="static">
+        <Toolbar>
+          <IconButton edge="start" color="inherit" aria-label="menu">
+            <MenuIcon />
+          </IconButton>
+          <Typography variant="h6">News</Typography>
+          <Button color="inherit">Login</Button>
+        </Toolbar>
+      </AppBar>
+      <Container fixed>
+        <Grid container style={ {padding: "20px 0px 20px 0px"} }>
+          <AddItemForm addItem={addTodoList} />
+        </Grid>
+        <Grid container spacing={3}>
+          {todoList.map((tl) => {
+            let tasksForTodoList = tasksObj[tl.id] || []; //эта функция сюда переехала потому что мы теперь мапит тудушки , и поэтому нам надо чтобы фильтрация взаимодействовала со всеми тудушками которые мы будем мапить
+            if (tl.filter === "completed") {
+              tasksForTodoList = tasksForTodoList.filter(
+                (t) => t.isDone === true
+              );
+            }
+            if (tl.filter === "active") {
+              tasksForTodoList = tasksForTodoList.filter(
+                (t) => t.isDone === false
+              );
+            }
 
-        return (
-          <TodoList
-            key={tl.id}
-            id={tl.id}
-            title={tl.title}
-            removeTask={removeTask}
-            tasks={tasksForTodoList}
-            changeFilter={changeFilter}
-            addTask={addTask}
-            changeTaskStatus={changeStatus}
-            changeTaskTitle={changeTaskTitle}
-            filter={tl.filter}
-            removeTodoList={removeTodoList}
-            changeTodoListTitle={changeTodoListTitle}
-          />
-        );
-      })}
+            return (
+              <Grid item>
+                <Paper style={{ padding: "10px"}}>
+                  <TodoList
+                    key={tl.id}
+                    id={tl.id}
+                    title={tl.title}
+                    removeTask={removeTask}
+                    tasks={tasksForTodoList}
+                    changeFilter={changeFilter}
+                    addTask={addTask}
+                    changeTaskStatus={changeStatus}
+                    changeTaskTitle={changeTaskTitle}
+                    filter={tl.filter}
+                    removeTodoList={removeTodoList}
+                    changeTodoListTitle={changeTodoListTitle}
+                  />
+                </Paper>
+              </Grid>
+            );
+          })}
+        </Grid>
+      </Container>
     </div>
   );
 }

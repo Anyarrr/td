@@ -3,6 +3,8 @@ import "./App.css";
 import { FilterValuesType } from "./App";
 import { AddItemForm } from "./AddItemForm";
 import { EditableSpan } from "./EditableSpan";
+import { Button, Checkbox, IconButton } from "@mui/material";
+import { Delete } from "@mui/icons-material";
 
 export type TaskType = {
   id: string;
@@ -16,11 +18,19 @@ type PropsType = {
   removeTask: (id: string, todoListId: string) => void;
   changeFilter: (value: FilterValuesType, todoListId: string) => void; //all active
   addTask: (title: string, todoListId: string) => void; //добавление таски
-  changeTaskStatus: (taskId: string, isDone: boolean, todoListId: string) => void;
-  changeTaskTitle: (taskId: string, newValue: string, todoListId: string) => void;
+  changeTaskStatus: (
+    taskId: string,
+    isDone: boolean,
+    todoListId: string
+  ) => void;
+  changeTaskTitle: (
+    taskId: string,
+    newValue: string,
+    todoListId: string
+  ) => void;
   filter: FilterValuesType;
-  removeTodoList:( todoListId: string) => void;
-  changeTodoListTitle:( todoListId: string, newTitle: string) => void;
+  removeTodoList: (todoListId: string) => void;
+  changeTodoListTitle: (todoListId: string, newTitle: string) => void;
 };
 
 export function TodoList(props: PropsType) {
@@ -37,33 +47,41 @@ export function TodoList(props: PropsType) {
     props.changeFilter("completed", props.id); //передаем id обратно в функцию для фильтрации тудушек
   };
 
-  const removeTodoList = () => {//удаление тудулиста
+  const removeTodoList = () => {
+    //удаление тудулиста
     props.removeTodoList(props.id);
   };
 
-  const changeTodoListTitle = (newTitle: string) => {//удаление тудулиста
+  const changeTodoListTitle = (newTitle: string) => {
+    //удаление тудулиста
     props.changeTodoListTitle(props.id, newTitle);
   };
 
-  const addTask = ( title: string ) => {//добавление заголовка тудушки
+  const addTask = (title: string) => {
+    //добавление заголовка тудушки
     props.addTask(title, props.id);
-  }
+  };
 
   return (
     <div>
-      <h3><EditableSpan title={props.title} onChange={changeTodoListTitle}/>
-        <button onClick={removeTodoList}>x</button>
+      <h3>
+        <EditableSpan title={props.title} onChange={changeTodoListTitle} />
+        <IconButton onClick={removeTodoList}>
+          <Delete />
+        </IconButton>
       </h3>
-      <AddItemForm addItem={addTask}/>
+      <AddItemForm addItem={addTask} />
       <div>
-        <ul>
+        <div>
           {props.tasks.map((t) => {
             const onClickHendler = () => {
               //функция добавления таски
               props.removeTask(t.id, props.id);
             };
 
-            const onChangeStatusHandler = (e: ChangeEvent<HTMLInputElement>) => {
+            const onChangeStatusHandler = (
+              e: ChangeEvent<HTMLInputElement>
+            ) => {
               let newIsDoneValue = e.currentTarget.checked;
               props.changeTaskStatus(t.id, newIsDoneValue, props.id);
             };
@@ -73,40 +91,44 @@ export function TodoList(props: PropsType) {
             };
 
             return (
-              <li key={t.id} className={t.isDone ? "is-done" : ""}>
+              <div key={t.id} className={t.isDone ? "is-done" : ""}>
                 {/*затемнение выполненных тасок с помощью класса
                  */}
-                <input
-                  type="checkbox"
+                <Checkbox
                   checked={t.isDone}
                   onChange={onChangeStatusHandler}
                 />
-                <EditableSpan title={t.title} onChange={onChangeTitleHandler}/>
-                <button onClick={onClickHendler}>x</button>
-              </li>
+                <EditableSpan title={t.title} onChange={onChangeTitleHandler} />
+                <IconButton onClick={onClickHendler}>
+                  <Delete />
+                </IconButton>
+              </div>
             );
           })}
-        </ul>
+        </div>
       </div>
       <div>
-        <button
-          className={props.filter === "all" ? "active-filter" : ""}
+        <Button
+          color="inherit"
+          variant={props.filter === "all" ? "contained" : "text"}
           onClick={onAllClickHendler}
         >
           All
-        </button>
-        <button
-          className={props.filter === "active" ? "active-filter" : ""}
+        </Button>
+        <Button
+          color="primary"
+          variant={props.filter === "active" ? "contained" : "text"}
           onClick={onActiveClickHendler}
         >
           Active
-        </button>
-        <button
-          className={props.filter === "completed" ? "active-filter" : ""}
+        </Button>
+        <Button
+          color="secondary"
+          variant={props.filter === "completed" ? "contained" : "text"}
           onClick={onComplitedClickHendler}
         >
           Completed
-        </button>
+        </Button>
       </div>
     </div>
   );
@@ -125,5 +147,3 @@ export function TodoList(props: PropsType) {
 //10.Удаление тудулистов
 //11.Добавление тудулистов!!!!!!!
 //12.аучились изменять инпут
-
-

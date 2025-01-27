@@ -1,4 +1,5 @@
-import { Button } from "@mui/material";
+import { ControlPoint } from "@mui/icons-material";
+import { IconButton, TextField } from "@mui/material";
 import { useState } from "react";
 
 type AddItemFormType = {
@@ -34,15 +35,18 @@ export function AddItemForm(props: AddItemFormType) {
 
   return (
     <div>
-      <input
+      <TextField
+        variant="outlined" //отвечает за центровку текста внутри инпута
+        label="Type value"
         value={title} //поле ввода равно пустой строке
         onChange={onChangeHandler}
         onKeyUp={onKeyUpHendler}
-        className={error ? "error" : ""} //если таска при добавлении равна пустой строке то добавить класс чтобы инпут подсветился красным
-      />
-      <Button variant="contained" color="primary" onClick={addTask}>+</Button>
-      {error && <div className="error-message">{error}</div>}{""}
-      {/*если равна пустой строке то и вывести текст */}
+        error={!!error} //если null то подсветит красным (!!null= null(false)=> подсвети меня красным) !!"Anna"=> ""=> не подсвечивай, убери стиль красного
+        helperText={error}//это строка или React-элемент, который отображается под компонентом ввода.
+      />  
+      <IconButton  color="primary" onClick={addTask}>
+        <ControlPoint/>
+      </IconButton>
     </div>
   );
 }

@@ -1,3 +1,4 @@
+import { TextField } from "@mui/material";
 import { ChangeEvent, useState } from "react";
 
 type EditableSpanPropsType = {
@@ -25,7 +26,7 @@ export function EditableSpan(props: EditableSpanPropsType) {
     setTitle(e.currentTarget.value);
   }
 
-  return editMode ? <input value={title} onBlur={activateViewMode} autoFocus onChange={onChangeTitleHandler}/> : <span onDoubleClick={activateEditMode} >{props.title}</span>;
+  return editMode ? <TextField value={title} onBlur={activateViewMode} autoFocus onChange={onChangeTitleHandler}/> : <span onDoubleClick={activateEditMode} >{props.title}</span>;
 }
 
 //файл который будет позволять изменять таски
